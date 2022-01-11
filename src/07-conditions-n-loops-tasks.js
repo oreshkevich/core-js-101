@@ -63,8 +63,12 @@ function getFactorial(n) {
  *   5,10  =>  45 ( = 5+6+7+8+9+10 )
  *   -1,1  =>  0  ( = -1 + 0 + 1 )
  */
-function getSumBetweenNumbers(/* n1, n2 */) {
-  throw new Error('Not implemented');
+function getSumBetweenNumbers(n1, n2) {
+  let a = 0;
+  for (let i = n1; i <= n2; i += 1) {
+    a += i;
+  }
+  return a;
 }
 
 
@@ -83,8 +87,12 @@ function getSumBetweenNumbers(/* n1, n2 */) {
  *   10,1,1   =>  false
  *   10,10,10 =>  true
  */
-function isTriangle(/* a, b, c */) {
-  throw new Error('Not implemented');
+function isTriangle(a, b, c) {
+  if (!a || !b || !c) {
+    return false;
+  }
+
+  return !!(a + b > c && a + c > b && b + c > a);
 }
 
 
@@ -120,8 +128,17 @@ function isTriangle(/* a, b, c */) {
  *   { top:20, left:20, width: 20, height: 20 }    =>  false
  *
  */
-function doRectanglesOverlap(/* rect1, rect2 */) {
-  throw new Error('Not implemented');
+function doRectanglesOverlap(rect1, rect2) {
+  const rect1Right4 = rect1.top + rect1.height;
+  const rect2Right4 = rect2.top + rect2.height;
+  const rect1L = rect1.left + rect1.width;
+  const rect2L = rect2.left + rect2.width;
+  return (
+    rect1L > rect2.left
+    && rect1.left < rect2L
+    && rect1.top < rect2Right4
+    && rect1Right4 > rect2.top
+  );
 }
 
 
@@ -151,10 +168,10 @@ function doRectanglesOverlap(/* rect1, rect2 */) {
  *   { center: { x:0, y:0 }, radius:10 },  { x:10, y:10 }   => false
  *
  */
-function isInsideCircle(/* circle, point */) {
-  throw new Error('Not implemented');
+function isInsideCircle(circle, point) {
+  return (point.y - circle.center.y) ** 2 + (point.x - circle.center.x) ** 2
+    < circle.radius ** 2;
 }
-
 
 /**
  * Returns the first non repeated char in the specified strings otherwise returns null.
@@ -167,10 +184,16 @@ function isInsideCircle(/* circle, point */) {
  *   'abracadabra'  => 'c'
  *   'entente' => null
  */
-function findFirstSingleChar(/* str */) {
-  throw new Error('Not implemented');
+function findFirstSingleChar(str) {
+  const arr = str.split('');
+  let answer = null;
+  for (let j = 0; j <= str.length; j += 1) {
+    if (arr.filter((i) => i === str[j]).length === 1 && answer === null) {
+      answer = str[j];
+    }
+  }
+  return answer;
 }
-
 
 /**
  * Returns the string representation of math interval,
@@ -194,8 +217,16 @@ function findFirstSingleChar(/* str */) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  let a2 = a;
+  let b2 = b;
+  if (a2 > b2) {
+    b2 = a2;
+    a2 = b;
+  }
+
+  const beg2 = isStartIncluded ? `[${a2}, ${b2}` : `(${a2}, ${b2}`;
+  return isEndIncluded ? `${beg2}]` : `${beg2})`;
 }
 
 
@@ -211,8 +242,8 @@ function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+function reverseString(str) {
+  return str.split('').reverse().join('');
 }
 
 
@@ -228,8 +259,9 @@ function reverseString(/* str */) {
  *   87354 => 45378
  *   34143 => 34143
  */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+function reverseInteger(num) {
+  const str = String(num);
+  return str.split('').reverse().join('');
 }
 
 
@@ -253,8 +285,27 @@ function reverseInteger(/* num */) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  let sum = 0;
+  const str = String(ccn);
+  const ccnArr = str.split('');
+  for (let i = 0; i < ccnArr.length; i += 1) {
+    if ((ccnArr.length - i) % 2 === 0) {
+      if (ccnArr[i] * 2 > 9) {
+        const sumTwo = (ccnArr[i] * 2).toString().split('');
+        const sum3 = +sumTwo[0] + +sumTwo[1];
+        sum += sum3;
+      } else {
+        sum += +ccnArr[i] * 2;
+      }
+    } else {
+      sum += +ccnArr[i];
+    }
+  }
+  if (sum % 10 === 0) {
+    return true;
+  }
+  return false;
 }
 
 /**
