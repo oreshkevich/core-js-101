@@ -322,8 +322,11 @@ function isCreditCardNumber(ccn) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  const arr = num.toString().split('');
+  const sum2 = arr.reduce((s, c) => +s + +c, 0);
+  const arr2 = sum2.toString().split('');
+  return arr2.reduce((s, c) => +s + +c, 0);
 }
 
 
@@ -348,8 +351,18 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  const s = '(){}[]<>';
+  const pile = [];
+  for (let i = 0; i < str.length; i += 1) {
+    const item = str[i];
+    const index = s.indexOf(item);
+    if (index % 2 !== 0) {
+      const lastS = pile.pop();
+      if (lastS !== s[index - 1]) return false;
+    } else pile.push(item);
+  }
+  return !pile.length;
 }
 
 
@@ -373,8 +386,8 @@ function isBracketsBalanced(/* str */) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  return num.toString(n);
 }
 
 
@@ -413,8 +426,17 @@ function getCommonDirectoryPath(/* pathes */) {
  *                         [ 6 ]]
  *
  */
-function getMatrixProduct(/* m1, m2 */) {
-  throw new Error('Not implemented');
+function getMatrixProduct(m1, m2) {
+  const g = [];
+  for (let i = 0; i < m1.length; i += 1) g[i] = [];
+  for (let n = 0; n < m2[0].length; n += 1) {
+    for (let i = 0; i < m1.length; i += 1) {
+      let t = 0;
+      for (let j = 0; j < m2.length; j += 1) t += m1[i][j] * m2[j][n];
+      g[i][n] = t;
+    }
+  }
+  return g;
 }
 
 
